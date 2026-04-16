@@ -138,11 +138,13 @@ void game_loop(){
         if(check_table(choice) == 0){
            
             fill_table(choice, turn);
-            turns -= 1;
             winner = check_winner(table);
 
             if(winner == player_x) printf("x wins!\n");
             else if (winner == player_o) printf("o wins!\n");
+            
+            turns -= 1;
+            
             else if ( turns == 0) printf("DRAW!\n");
             
             if(turn == player_x) turn = player_o;
