@@ -101,7 +101,7 @@ int check_winner(char *table[3][3]){
     
     else if(table[0][0] == "|O|" && table[1][0] == "|O|" && table[2][0] == "|O|") return 1;
     else if(table[0][1] == "|O|" && table[1][1] == "|O|" && table[2][1] == "|O|") return 1;
-    else if(table[0][2] == "|O|" && table[1][2] == "|O|" && table[2][2] == "|O|") return 1;
+    else if(table[0][2] == "|O|" && table[1][2] == "|O|" && table[2][2] == "|O|") return 1; 
 
 }
 
@@ -110,8 +110,8 @@ void game_loop(){
 
     
     int choice;
-    int turns = 9;
     int turn = player_o;
+    int turns = 9;    
     int is_empty;
     int winner;
     char *t;
@@ -119,6 +119,11 @@ void game_loop(){
     while(true){
 
         print_table();
+
+        if(turns == 0){
+            printf("DRAW!");
+            break;
+        }
         
         if(check_winner(table) == 1 || check_winner(table) == 0){
             break;
@@ -136,17 +141,13 @@ void game_loop(){
         } 
     
         if(check_table(choice) == 0){
-           
+            turns -= 1;
             fill_table(choice, turn);
             winner = check_winner(table);
 
             if(winner == player_x) printf("x wins!\n");
             else if (winner == player_o) printf("o wins!\n");
-            
-            turns -= 1;
-            
-            else if ( turns == 0) printf("DRAW!\n");
-            
+                     
             if(turn == player_x) turn = player_o;
             else if (turn == player_o) turn = player_x;
          
