@@ -10,7 +10,7 @@ char *table[3][3] = {
 
 void game_loop();
 void print_table();
-void check_winner();
+int check_winner();
 void fill_table(int choice, int turn);
 int check_table(int choice);
 
@@ -52,7 +52,6 @@ int check_table(int choice){
 
 }
 
-
 void fill_table(int choice, int turn){
 
     for(int i = 0; i < 3; i++){
@@ -76,103 +75,75 @@ void fill_table(int choice, int turn){
 
         }
 }
-void check_winner(){
 
+int check_winner(){
 
-    if(table[0][0] == "|O|" && table[0][1] == "|O|" && table[0][2] == "|O|"){
-        printf("Winner is O");
-    }
+    //Rows
+    if((table[0][0] == "|O|" && table[0][1] == "|O|" && table[0][2] == "|O|")) return 1;
+    else if(table[1][0] == "|O|" && table[1][1] == "|O|" && table[1][2] == "|O|")return 1;
+    else if(table[2][0] == "|O|" && table[2][1] == "|O|" && table[2][2] == "|O|") return 1;
+    
+    else if(table[0][1] == "|X|" && table[0][1] == "|X|" && table[0][2] == "|X|") return 0;
+    else if(table[1][0] == "|X|" && table[1][1] == "|X|" && table[1][2] == "|X|") return 0;
+    else if(table[2][0] == "|X|" && table[2][1] == "|X|" && table[2][2] == "|X|") return 0;
+    
+    else if(table[0][0] == "|O|" && table[1][1] == "|O|" && table[2][2] == "|O|") return 1;
+    else if(table[0][0] == "|X|" && table[1][1] == "|X|" && table[2][2] == "|X|") return 0;
+    else if(table[0][2] == "|O|" && table[1][1] == "|O|" && table[2][0] == "|O|") return 1;
+ 
+    else if(table[0][2] == "|X|" && table[1][1] == "|X|" && table[2][0] == "|X|") return 0;
+    else if(table[0][0] == "|X|" && table[1][0] == "|X|" && table[2][0] == "|X|") return 0;
+    else if(table[0][1] == "|X|" && table[1][1] == "|X|" && table[2][1] == "|X|") return 0;
 
-    else if(table[1][0] == "|O|" && table[1][1] == "|O|" && table[1][2] == "|O|"){
-        printf("Winner is O");
-    }
-
-    else if(table[2][0] == "|O|" && table[2][1] == "|O|" && table[2][2] == "|O|"){
-        printf("Winner is O");
-    }
-
-    else if(table[0][0] == "|X|" && table[0][1] == "|X|" && table[0][2] == "|X|"){
-        printf("Winner is X");
-    }
-
-    else if(table[1][0] == "|X|" && table[1][1] == "|X|" && table[1][2] == "|X|"){
-        printf("Winner is X");
-    }
-
-    else if(table[2][0] == "|X|" && table[2][1] == "|X|" && table[2][2] == "|X|"){
-        printf("Winner is X");
-    }
-
-    //
-    else if(table[0][0] == "|O|" && table[1][1] == "|O|" && table[2][2] == "|O|"){
-        printf("Winner is O");
-    }
-
-    else if(table[0][0] == "|X|" && table[1][1] == "|X|" && table[2][2] == "|X|"){
-        printf("Winner is X");
-    }
-
-    //
-    else if(table[0][2] == "|O|" && table[1][1] == "|O|" && table[2][0] == "|O|"){
-        printf("Winner is O");
-    }
-
-     else if(table[0][2] == "|X|" && table[1][1] == "|X|" && table[2][0] == "|X|"){
-        printf("Winner is X");
-    } 
+    else if(table[0][2] == "|X|" && table[1][2] == "|X|" && table[2][2] == "|X|") return 0;
+    
+    else if(table[0][0] == "|O|" && table[1][0] == "|O|" && table[2][0] == "|O|") return 1;
+    else if(table[0][1] == "|O|" && table[1][1] == "|O|" && table[2][1] == "|O|") return 1;
+    else if(table[0][2] == "|O|" && table[1][2] == "|O|" && table[2][2] == "|O|") return 1;
 
 }
 
 
 void game_loop(){
 
-    /*
-    player_x = 0,
-    player_o = 1
-    */
     int choice;
-    int turn = player_x;
+    int turn = player_o;
     int is_empty;
+    int winner;
+    char *t;
 
     while(true){
-
-
+        
         print_table();
-        check_winner();
-      
-        if(turn == player_x){
-            printf("\n(x) > ");
 
-        } else if (turn == player_o){
-            printf("\n(O) > ");
-        }
-
+        if(turn == player_x) t = "\nTurn: x > ";
+        else if (turn == player_o)t = "\nTurn: o > ";
+        
+        printf("%s", t);
         scanf("%d", &choice);
 
-        if(choice < 0 || choice > 9){
-            printf("Wrong choice");
+        if(choice < 0 || choice > 9 || check_table(choice) == 1){
+            printf("Err");
             scanf("%d", &choice);
         } 
     
         if(check_table(choice) == 0){
+           
             fill_table(choice, turn);
+           
+            winner = check_winner();
 
-                if(turn == player_x)
-                {
-                    turn = player_o;
-                }
-                else if (turn == player_o)
-                {
-                    turn = player_x;
-                }
-
+            if(winner == player_x) printf("x wins!\n");
+            else if (winner == player_o) printf("o wins!\n");
+            
+            if(turn == player_x) turn = player_o;
+            else if (turn == player_o) turn = player_x;
+         
         } else {
             printf("Err > ");
             scanf("%d", &choice);
         }
 
-    
     }
 
- 
 }
