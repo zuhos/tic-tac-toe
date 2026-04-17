@@ -3,9 +3,9 @@
 #include <string.h>
 
 char *table[3][3] = {
-        {"| |", "| |", "| |"},
-        {"| |", "| |", "| |"},
-        {"| |", "| |", "| |"}
+        {"", "", ""},
+        {"", "", ""},
+        {"", "", ""}
  };
 
 
@@ -17,6 +17,7 @@ int check_table(int choice);
 
 
 enum turn{
+    draw = -1,
     player_x = 0,
     player_o = 1
 };
@@ -33,8 +34,16 @@ void print_table(){
 
     for(int i = 0; i < 3; i++){
             for(int j = 0; j < 3; j++){
+             
+                if(j == 2){
+                    printf("%5s ", table[i][j]);
+                } else if (j < 2){
+                    printf("%5s |", table[i][j]);          
+                }
 
-                printf("%s", table[i][j]);
+            }
+            if(i < 2){
+                printf("%5s", "\n-------------------");
             }
             printf("\n");
         }
@@ -47,7 +56,7 @@ int check_table(int choice){
     int i = index / 3;
     int j = index % 3;
 
-    if(strcmp(table[i][j], "| |") == 0){
+    if(strcmp(table[i][j], "") == 0){
         return 0;
     }
 
@@ -60,14 +69,14 @@ void fill_table(int choice, int turn){
 
                 if(choice == i * 3 + j + 1){
                     
-                    table[i][j] = "|X|";
+                    table[i][j] = "X";
 
                     switch(turn){
                         case 0:
-                            table[i][j] = "|X|";
+                            table[i][j] = "X";
                         break;
                         case 1:
-                            table[i][j] = "|O|";
+                            table[i][j] = "O";
                         break;
                     }
                 }
@@ -79,27 +88,27 @@ void fill_table(int choice, int turn){
 
 int check_winner(char *table[3][3]){
     
-    if((table[0][0] == "|O|" && table[0][1] == "|O|" && table[0][2] == "|O|")) return 1;
-    else if(table[1][0] == "|O|" && table[1][1] == "|O|" && table[1][2] == "|O|")return 1;
-    else if(table[2][0] == "|O|" && table[2][1] == "|O|" && table[2][2] == "|O|") return 1;
+    if((table[0][0] == "O" && table[0][1] == "O" && table[0][2] == "O")) return 1;
+    else if(table[1][0] == "O" && table[1][1] == "O" && table[1][2] == "O")return 1;
+    else if(table[2][0] == "O" && table[2][1] == "O" && table[2][2] == "O") return 1;
     
-    else if(table[0][1] == "|X|" && table[0][1] == "|X|" && table[0][2] == "|X|") return 0;
-    else if(table[1][0] == "|X|" && table[1][1] == "|X|" && table[1][2] == "|X|") return 0;
-    else if(table[2][0] == "|X|" && table[2][1] == "|X|" && table[2][2] == "|X|") return 0;
+    else if(table[0][1] == "X" && table[0][1] == "X" && table[0][2] == "X") return 0;
+    else if(table[1][0] == "X" && table[1][1] == "X" && table[1][2] == "X") return 0;
+    else if(table[2][0] == "X" && table[2][1] == "X" && table[2][2] == "X") return 0;
     
-    else if(table[0][0] == "|O|" && table[1][1] == "|O|" && table[2][2] == "|O|") return 1;
-    else if(table[0][0] == "|X|" && table[1][1] == "|X|" && table[2][2] == "|X|") return 0;
-    else if(table[0][2] == "|O|" && table[1][1] == "|O|" && table[2][0] == "|O|") return 1;
+    else if(table[0][0] == "O" && table[1][1] == "O" && table[2][2] == "O") return 1;
+    else if(table[0][0] == "X" && table[1][1] == "X" && table[2][2] == "X") return 0;
+    else if(table[0][2] == "O" && table[1][1] == "O" && table[2][0] == "O") return 1;
  
-    else if(table[0][2] == "|X|" && table[1][1] == "|X|" && table[2][0] == "|X|") return 0;
-    else if(table[0][0] == "|X|" && table[1][0] == "|X|" && table[2][0] == "|X|") return 0;
-    else if(table[0][1] == "|X|" && table[1][1] == "|X|" && table[2][1] == "|X|") return 0;
+    else if(table[0][2] == "X" && table[1][1] == "X" && table[2][0] == "X") return 0;
+    else if(table[0][0] == "X" && table[1][0] == "X" && table[2][0] == "X") return 0;
+    else if(table[0][1] == "X" && table[1][1] == "X" && table[2][1] == "X") return 0;
 
-    else if(table[0][2] == "|X|" && table[1][2] == "|X|" && table[2][2] == "|X|") return 0;
+    else if(table[0][2] == "X" && table[1][2] == "X" && table[2][2] == "X") return 0;
     
-    else if(table[0][0] == "|O|" && table[1][0] == "|O|" && table[2][0] == "|O|") return 1;
-    else if(table[0][1] == "|O|" && table[1][1] == "|O|" && table[2][1] == "|O|") return 1;
-    else if(table[0][2] == "|O|" && table[1][2] == "|O|" && table[2][2] == "|O|") return 1; 
+    else if(table[0][0] == "O" && table[1][0] == "O" && table[2][0] == "O") return 1;
+    else if(table[0][1] == "O" && table[1][1] == "O" && table[2][1] == "O") return 1;
+    else if(table[0][2] == "O" && table[1][2] == "O" && table[2][2] == "O") return 1; 
 
 }
 
@@ -111,29 +120,17 @@ void game_loop(){
     int turn = player_o;
     int turns = 9;    
     int is_empty;
+    int gameover = 0;
     int winner;
     char *t;
 
-    while(true){
+    while(!gameover){
 
         print_table();
-
-        if(turns == 0){
-            printf("DRAW!");
-            break;
-        }
-
-        if(winner == player_x) printf("x wins!\n");
-        if(winner == player_o) printf("o wins!\n");
-        
-        if(check_winner(table) == 1 || check_winner(table) == 0){
-            break;
-        }
 
         if(turn == player_x) t = "\nTurn: x > ";
         else if (turn == player_o)t = "\nTurn: o > ";
         
-
         do{
             printf("%s", t);
             scanf("%d", &choice);
@@ -143,11 +140,27 @@ void game_loop(){
         if(check_table(choice) == 0){
             turns -= 1;
             fill_table(choice, turn);
-            winner = check_winner(table);
             if(turn == player_x) turn = player_o;
             else if (turn == player_o) turn = player_x;
-         
         } 
+
+        winner = check_winner(table);
+
+         switch(winner){
+
+                case player_x:
+                    gameover = 1;
+                    printf("\nX wins!\n");
+                    print_table();
+                break;
+
+                case player_o:
+                    gameover = 1;
+                    printf("\nO wins!\n");
+                    print_table();
+                break;
+
+            }
 
     }
     
